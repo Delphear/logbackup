@@ -58,8 +58,6 @@ then
 		smtmp=$(date +%Y%m%d%H%M%S)
 		echo "${smtmp}${backuppath}${dirname}_${backupday_y}.tar.gz打包完成">>${logpath}
 	done
-	smtmp=$(date +%Y%m%d%H%M%S)
-	echo "${smtmp}${backuppath}rest_${backupday_y}.tar.gz打包完成">>${logpath}
 else
   echo "${smtmp} ${localdir_trc}${backupday} is not exist or empty(Don't deal with)">>${logpath}
 fi
@@ -88,8 +86,6 @@ then
 		smtmp=$(date +%Y%m%d%H%M%S)
 		echo "${smtmp}${backuppath}${dirname}_${backupday_y}.tar.gz打包完成">>${logpath}
 	done
-	smtmp=$(date +%Y%m%d%H%M%S)
-	echo "${smtmp}${backuppath}rest_${backupday_y}.tar.gz打包完成">>${logpath}
 else
   echo "${smtmp} ${localdir_log}${day} is not exist or empty(Don't deal with)">>${logpath}
 fi
@@ -119,7 +115,8 @@ echo "${smtmp}  delete log over">>${logpath}
 rm -rf ${localdir_log}wsy/
 smtmp=$(date +%Y%m%d%H%M%S)
 echo "${smtmp} delete old file success.">>${logpath}
-
+today=$(date +%d)
+mv ${logpath} ${localdir_trc}${today}
 #REMOTE_IP=127.0.0.1
 #USER=user
 #PASSWD=1234qwer
