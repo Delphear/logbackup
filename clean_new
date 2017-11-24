@@ -1,0 +1,71 @@
+#!/bin/sh
+#=================================================================
+#   Script :  clean                                         
+#   Info   :  This script backups trace files and log files of current day                    
+#                                                                 
+#   Input  :  none                  
+#                                                                 
+#   Output :  none                   
+#                                                                 
+#                                                                 
+#    MODIFIED   (MM/DD/YY)                                        
+#    dax         04/16/10 - modify format           
+#    xxxx        xx/xx/xx - Creation                              
+#-----------------------------------------------------------------
+#   Prepare the variables
+#-----------------------------------------------------------------
+smtmp=$(date +%Y%m%d%H%M%S)
+echo "${smtmp} ==clean log and trc start======================="
+CURDAY=${1}
+if [ -z ${CURDAY} ]
+	then
+	CURDAY=`date +%d`  
+fi                    									#current day
+echo "${smtmp} ==clean day is ${CURDAY}======================="
+CURTIME=`date +%H%M%S`                 #current time
+LOG_DIR=${HWORKDIR}/log/${CURDAY}      #log directory
+#-----------------------------------------------------------------
+#   1.) make directory for log backups
+#-----------------------------------------------------------------
+mkdir ${LOG_DIR}/${CURTIME}            
+CURR_LOG_DIR=${LOG_DIR}/${CURTIME}
+#-----------------------------------------------------------------
+#   2.) List all of the log files and move these files to the 
+#       directory we just made
+#-----------------------------------------------------------------
+for i in `ls ${LOG_DIR}`
+do
+   file=${LOG_DIR}/${i}
+   if [ -f ${file} ]
+   then
+      mv ${file} ${CURR_LOG_DIR}
+   fi
+done
+TRC_DIR=${HWORKDIR}/trc               # trace directory
+CURR_TRC_DIR=${TRC_DIR}/${CURDAY}
+#-----------------------------------------------------------------
+#   1.) make the storage directory
+#-----------------------------------------------------------------
+mkdir ${TRC_DIR}/${CURDAY}/${CURTIME}
+STOREDIR=${TRC_DIR}/${CURDAY}/${CURTIME}
+echo ${STOREDIR}
+#-----------------------------------------------------------------
+#   2.) List all files in current day directory and move these  
+#       to the directory we just made
+#-----------------------------------------------------------------
+for i in `ls $CURR_TRC_DIR`
+do
+  file=${CURR_TRC_DIR}/${i}
+  if [ -f ${file} ]
+  then
+	mv ${file} $STOREDIR
+  fi
+done
+#-----------------------------------------------------------------
+#  back up the trace files
+#-----------------------------------------------------------------
+smtmp=$(date +%Y%m%d%H%M%S)
+echo "${smtmp}........clean trace and log files success..................."
+#-----------------------------------------------------------------
+# EOF                                                             
+#-----------------------------------------------------------------
